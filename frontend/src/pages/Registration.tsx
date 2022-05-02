@@ -1,51 +1,50 @@
 import React, { useState } from "react";
 import './Registration.css'
 import { REGISTRATION_ENDPOINT } from '../AppConfig'
+import { Link } from "react-router-dom";
 
 const Registration = () => {
 
     const [username, setUsername] = useState('');
-    const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
 
 
-    const sendLoginRequest = () => {
-        if (username != '' && mail != '' && password != '') {
+    const sendLoginRequest = async () => {
+        if (username != '' && password != '') {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(
                     {
                         username: username,
-                        mail: mail,
                         password: password
                     }
                 )
             };
 
-            fetch(REGISTRATION_ENDPOINT, requestOptions)
-                .then(response => console.log('response: ' + response.json()))
+            const response = await fetch(REGISTRATION_ENDPOINT, requestOptions);
+            console.log('response: ' + response.json());
         }
     }
 
     return (
         <div className="registration-container">
             <form>
-                <h3>Log in</h3>
+                <h3>Sign up</h3>
 
                 <div>
                     <input type="text" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
                 </div>
-
-                <div>
-                    <input type="email" placeholder="Enter email" onChange={e => setMail(e.target.value)} />
-                </div>
-
                 <div>
                     <input type="password" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
                 </div>
-
                 <button type="button" onClick={sendLoginRequest}>Sign in </button>
+                <span>
+                    Already have an account? 
+                </span>
+                <Link to="/login">
+                    Log in!
+                </Link>
             </form>
         </div>
     );
