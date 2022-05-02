@@ -17,7 +17,8 @@
     "web-vitals": "^2.1.4",
     "material-icons" : "^1.10.8",
     "react-router-dom" : "^6.3.0",
-    "axios" : "^0.27.2"
+    "axios" : "^0.27.2",
+    "dotenv" : "^16.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
