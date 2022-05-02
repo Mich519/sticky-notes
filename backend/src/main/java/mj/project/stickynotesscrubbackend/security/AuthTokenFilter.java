@@ -21,13 +21,11 @@ import java.io.IOException;
 public class AuthTokenFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final UserDetailsService appUserService;
-
     @Autowired
     public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsService appUserService) {
         this.jwtUtils = jwtUtils;
         this.appUserService = appUserService;
     }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
