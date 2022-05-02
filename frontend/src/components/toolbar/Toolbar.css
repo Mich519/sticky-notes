@@ -1,0 +1,12 @@
+.toolbar-container {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 15px;
+    background: whitesmoke;
+}
+
+.header-icons {
+    display: flex;
+}
