@@ -13,7 +13,7 @@ public class JwtUtils {
 
     // todo: change this!!!
     private final String jwtSecret = "server_secret";
-    private final int jwtExpirationMs = 1;
+    private final int jwtExpirationMs = 1200000;
 
     public String generateJwtToken(Authentication authentication) {
         AppUser appUser = (AppUser) authentication.getPrincipal();

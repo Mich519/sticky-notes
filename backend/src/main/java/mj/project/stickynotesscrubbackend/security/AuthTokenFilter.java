@@ -13,26 +13,40 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Optional;
 
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final UserDetailsService appUserService;
+
     @Autowired
     public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsService appUserService) {
         this.jwtUtils = jwtUtils;
         this.appUserService = appUserService;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                String username = jwtUtils.getUserNameFromJwtToken(jwt);
+            //String jwt = parseJwt(request);
+            Optional<Cookie> jwtCookie = Optional.empty();
+            if(request.getCookies() != null ) {
+                jwtCookie = Arrays.stream(request.getCookies())
+                        .filter(cookie -> cookie.getName().equals("jwt"))
+                        .findFirst();
+            }
+
+
+            if (jwtCookie.isPresent() && jwtUtils.validateJwtToken(jwtCookie.get().getValue())) {
+                String username = jwtUtils.getUserNameFromJwtToken(jwtCookie.get().getValue());
                 UserDetails userDetails = appUserService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
@@ -43,13 +57,5 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             e.printStackTrace();
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
-        }
-        return null;
     }
 }

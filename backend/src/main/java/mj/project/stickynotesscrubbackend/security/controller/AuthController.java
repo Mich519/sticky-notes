@@ -6,7 +6,7 @@ import mj.project.stickynotesscrubbackend.app_user.entity.AppUser;
 import mj.project.stickynotesscrubbackend.app_user.service.AppUserService;
 import mj.project.stickynotesscrubbackend.security.jwt.JwtResponse;
 import mj.project.stickynotesscrubbackend.security.jwt.JwtUtils;
-import mj.project.stickynotesscrubbackend.security.payload.SignupRequest;
+import mj.project.stickynotesscrubbackend.security.payload.request.SignupRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -35,19 +38,22 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> loginAppUser(@RequestBody SigninRequest signinRequest) {
+    @ResponseBody
+    public ResponseEntity<?> loginAppUser(@RequestBody SigninRequest signinRequest, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(signinRequest.getUsername(), signinRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //AppUser appUser = (AppUser) authentication.getPrincipal();
         String jwt = jwtUtils.generateJwtToken(authentication);
-        AppUser appUser = (AppUser) authentication.getPrincipal();
-        JwtResponse jwtResponse = JwtResponse.builder()
-                .token(jwt)
-                .id(String.valueOf(appUser.getId()))
-                .username(appUser.getUsername())
-                .build();
-        return ResponseEntity.ok(jwtResponse);
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(7*60*60);
+        cookie.setPath("/"); //todo: refresh token
+        cookie.setSecure(false); // todo: change for prod
+        response.addCookie(cookie);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/signup")

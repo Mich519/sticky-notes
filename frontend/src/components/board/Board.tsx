@@ -1,40 +1,30 @@
-import React, {useState, useEffect, useId} from "react";
+import React, { useState, useEffect, useId } from "react";
 import Note from "../note/Note";
 import './Board.css';
-
-
+import axios from "axios";
+import { MY_NOTES_URL } from "../../BackendUrls";
+import { NoteDto } from "../../requests/dtos";
+import {getAllNotesRequest} from "../../requests/requests"
 
 const Board = () => {
 
-    const [notesList, setNotesList] = useState<Array<JSX.Element>>([]);
+    const [noteElementList, setNoteElementList] = useState<Array<JSX.Element>>([]);
 
-    useEffect(() => {
-        
-    });
+    const fetchAllNotes = async () => {
+        const noteDtoList : Array<NoteDto> = await getAllNotesRequest();
+        const temp = noteDtoList.map(noteDto => {
+            return <Note title={noteDto.title} content={noteDto.content}/>
+        });
+        setNoteElementList(temp);
+    };
 
-    const deleteNote = () => {
-            
-    }
-
-    // for test only 
-    const initializeNotes = () => {
-        notesList.push(<Note title="title" content="contentfdgmlksdfgj;lsdfkj;sdfgkljm;sdfglkfgjs;klsdfm;ldfksm;sdfglkm,gnmsdf;lfdgjmk;lskjlllljljljljljljljljljljljljljlljk;lkj;gldfaskj;fgaskjfg;sdlksdfgj;lksdfj;lsdfgkjm;lsdfkmsdfg;lksdfgml;kfg;lfgkdfgjk'dfglskfg;'sdlkfg;sdlkfdgk;lksdfgl;'fdgk;'ldfgk'dfg;slk"/>);
-        notesList.push(<Note title="title" content="content"/>);
-        notesList.push(<Note title="title" content="content"/>);
-        notesList.push(<Note title="title" content="content"/>);
-        notesList.push(<Note title="title" content="content"/>);
-        notesList.push(<Note title="title" content="content"/>);
-        notesList.push(<Note title="title" content="content"/>);
-    }
-
-    initializeNotes();
+    useEffect(() => {fetchAllNotes()}, []);
 
     return (
         <div className="board-container">
             <div className="board">
-                {
-                    React.Children.toArray(notesList)
-                }
+                {noteElementList}
+                <Note title="title" content="content" />
             </div>
         </div>
     );

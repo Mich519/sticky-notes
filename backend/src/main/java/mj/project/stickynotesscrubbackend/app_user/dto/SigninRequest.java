@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import mj.project.stickynotesscrubbackend.app_user.entity.AppUser;
-import mj.project.stickynotesscrubbackend.notes.entity.Note;
+import mj.project.stickynotesscrubbackend.note.entity.Note;
 
 import java.util.List;
 

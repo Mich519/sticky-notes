@@ -1,4 +1,4 @@
-package mj.project.stickynotesscrubbackend.security.payload;
+package mj.project.stickynotesscrubbackend.security.payload.request;
 
 import lombok.Getter;
 

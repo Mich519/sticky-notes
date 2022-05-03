@@ -31,12 +31,12 @@ public class AppUserService implements UserDetailsService {
         return appUserOptional.get();
     }
 
-    public Optional<AppUser> findById(int id) {
-        return appUserRepository.findById(id);
-    }
-
     public List<AppUser> findAll() {
         return appUserRepository.findAll();
+    }
+
+    public Optional<AppUser> findUserByUsername(String username) {
+        return appUserRepository.findAppUserByUsername(username);
     }
 
     public boolean existsByUsername(String username) {

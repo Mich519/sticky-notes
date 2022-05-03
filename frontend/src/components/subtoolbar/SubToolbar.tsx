@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Icon from "../note/Icon";
 import './SubToolbar.css'
 import '../common/Common.css'
+import axios from "axios";
+import { MY_NOTES_URL } from "../../BackendUrls";
+import { postNoteRequest } from "../../requests/requests";
 
 const SubToolbar = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -12,9 +15,9 @@ const SubToolbar = () => {
         setIsVisible(!isVisible);
     }
 
-    const addNote = () => {
+    const addNote = async () => {
         if (title != '' && content != '') {
-            
+            postNoteRequest({title, content});
         }
     }
 

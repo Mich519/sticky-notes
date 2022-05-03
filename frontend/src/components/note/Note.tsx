@@ -17,16 +17,11 @@ const Note = (props: NoteProp) => {
 
     }, [isRendered]);
 
-    const displayNote = () => {
-        { console.log(id); }
-    }
-
 
     const removeNote = () => {
         
     }
 
-    displayNote();
 
     return (
         <div className='note-container'>
@@ -35,7 +30,7 @@ const Note = (props: NoteProp) => {
                 {props.title}
             </div>
 
-            <div className='note-content' onClick={displayNote}>
+            <div className='note-content'>
                 {props.content}
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './Registration.css'
-import { REGISTRATION_ENDPOINT } from '../AppConfig'
+import { REGISTRATION_ENDPOINT } from '../BackendUrls'
 import { Link } from "react-router-dom";
 
 const Registration = () => {
@@ -9,11 +9,13 @@ const Registration = () => {
     const [password, setPassword] = useState('');
 
 
-    const sendLoginRequest = async () => {
+    const sendSignupRequest = async () => {
         if (username != '' && password != '') {
             const requestOptions = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(
                     {
                         username: username,
@@ -23,7 +25,7 @@ const Registration = () => {
             };
 
             const response = await fetch(REGISTRATION_ENDPOINT, requestOptions);
-            console.log('response: ' + response.json());
+            console.log(response);
         }
     }
 
@@ -38,9 +40,9 @@ const Registration = () => {
                 <div>
                     <input type="password" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type="button" onClick={sendLoginRequest}>Sign in </button>
+                <button type="button" onClick={sendSignupRequest}>Sign up </button>
                 <span>
-                    Already have an account? 
+                    Already have an account?
                 </span>
                 <Link to="/login">
                     Log in!

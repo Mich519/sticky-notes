@@ -6,8 +6,11 @@ import mj.project.stickynotesscrubbackend.app_user.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,16 +26,17 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SigninRequest> findAppUser(@PathVariable int id) {
-        Optional<AppUser> appUser = appUserService.findById(id);
-        if (appUser.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            SigninRequest appUserDto = SigninRequest.createFrom(appUser.get());
-            return ResponseEntity.ok(appUserDto);
+    @GetMapping("/{username}")
+    public ResponseEntity<AppUser> findAppUser(@PathVariable String username, Principal principal) {
+        if (principal.getName().equals(username)) {
+            Optional<AppUser> appUser = appUserService.findUserByUsername(username);
+            return appUser
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
+
 
     @GetMapping
     public ResponseEntity<List<SigninRequest>> findAllUsers() {
@@ -42,7 +46,6 @@ public class AppUserController {
 
         return ResponseEntity.ok(appUserDtoList);
     }
-
 
     @PostMapping
     public ResponseEntity<SigninRequest> createUser(@RequestBody SigninRequest appUserDto) {
