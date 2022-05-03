@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './Login.css'
 import '../components/common/Common.css'
 import { Link } from "react-router-dom";
 import { LOGIN_ENDPOINT } from "../BackendUrls";
 import axios from 'axios';
+import  { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
@@ -11,6 +12,12 @@ const Login = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showLoginFailureMessage, setShowLoginFailureMessage] = useState(false);
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        
+    }, [showLoginFailureMessage]);
 
     const sendLoginRequest = async () => {
         if (username !== '' && password !== '') {
@@ -22,10 +29,14 @@ const Login = () => {
                 }, {
                     withCredentials: true
                 })
-                console.log(response);
+
+                if (response.status === 200) {
+                    navigator('/', {replace:true});
+                }
 
             } catch (error) {
                 console.log(error);
+                setShowLoginFailureMessage(true);
             }
         }
     }
@@ -42,19 +53,22 @@ const Login = () => {
                 <div className="form-group">
                     <input type="password" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
                 </div>
-
-                <div className="form-group">
-                    <div className="custom-control custom-checkbox">
-                    </div>
-                </div>
                 <button type="button" onClick={sendLoginRequest}>Sign in</button>
+                <span>
+                    Don't have an account?
+                    <Link to="/signup">
+                        Sign up!
+                    </Link>
+                </span>
+                <div>
+                    {
+                        showLoginFailureMessage ? <span> Login lub hasło jest nieprawidłowe!</span> : null
+                    }
+                </div>
+
             </form>
-            <span>
-                Don't have an account?
-            </span>
-            <Link to="/signup">
-                Sign up!
-            </Link>
+
+
         </div>
     );
 }

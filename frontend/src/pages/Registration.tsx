@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import './Registration.css'
 import { REGISTRATION_ENDPOINT } from '../BackendUrls'
 import { Link } from "react-router-dom";
+import  { useNavigate } from 'react-router-dom'
 
 const Registration = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigator = useNavigate();
 
 
     const sendSignupRequest = async () => {
@@ -25,6 +27,9 @@ const Registration = () => {
             };
 
             const response = await fetch(REGISTRATION_ENDPOINT, requestOptions);
+            if(response.status == 201) {
+                navigator('/login', {replace:true});
+            }
             console.log(response);
         }
     }

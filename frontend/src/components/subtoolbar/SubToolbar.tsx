@@ -18,6 +18,7 @@ const SubToolbar = () => {
     const addNote = async () => {
         if (title != '' && content != '') {
             postNoteRequest({title, content});
+            
         }
     }
 

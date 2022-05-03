@@ -19,6 +19,7 @@ const Board = () => {
     };
 
     useEffect(() => {fetchAllNotes()}, []);
+    useEffect(() => {fetchAllNotes()}, noteElementList);
 
     return (
         <div className="board-container">
