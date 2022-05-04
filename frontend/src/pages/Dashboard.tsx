@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import Board from "../components/board/Board";
 import SubToolbar from "../components/subtoolbar/SubToolbar";
 import Toolbar from "../components/toolbar/Toolbar";
-import axios from "axios";
-import { USERS_URL } from "../BackendUrls";
-import { getAllNotesRequest } from "../requests/requests";
-import Popup from "reactjs-popup";
-
-
-
 
 const Dashboard = () => {
 
+    const [test, setTest] = useState(false);
 
+    const rerender = () => {
+        setTest(!test);
+    }
 
     return (
         <div>
             <Toolbar />
-            <SubToolbar />
+            <SubToolbar rerenderParentCallback={rerender}/>
             <Board/>
         </div>
     );

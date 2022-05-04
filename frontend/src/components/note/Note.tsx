@@ -13,14 +13,7 @@ interface NoteProp {
 
 const Note = (props: NoteProp) => {
     const [id, setId] = useState(props.id);
-    const [isRendered, setIsRendered] = useState(true);
-    const [isEditMode, setIsEditMode] = useState(false);
     const navigator = useNavigate();
-    
-    useEffect(() => {
-
-    }, [isRendered]);
-
 
     const removeNote = async () => {
         const status = await deleteNoteRequest(id);
@@ -28,10 +21,6 @@ const Note = (props: NoteProp) => {
         if (status === 204) {
             navigator('/', {replace:true}); //todo: refresh after removing a note
         }
-    }
-
-    const editNote = () => {
-        setIsEditMode(true);
     }
 
     return (
@@ -44,16 +33,13 @@ const Note = (props: NoteProp) => {
             <div className='note-content'>
                 {props.content}
             </div>
-
+            
             <div className='note-toolbox display-animation'>
                 <Icon name="push_pin" />
                 <Icon name="color_lens" />
                 <Icon name="image" />
                 <div onClick={removeNote}>
                     <Icon name="delete" />
-                </div>
-                <div onClick={editNote}>
-                    <Icon name="edit" />
                 </div>
             </div>
         </div>

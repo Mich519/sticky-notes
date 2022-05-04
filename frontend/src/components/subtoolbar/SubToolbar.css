@@ -3,8 +3,8 @@
     box-sizing: border-box;
     padding: 1%;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
-    
 }
 
 .add-note-button-wrapper {
@@ -12,11 +12,16 @@
     justify-content: center;
 }
 
-.form-container {
+.note-title {
     display: flex;
     justify-content: center;
-    flex-direction: row;
-    display: none;
+    flex-direction: column;
+}
+
+.note-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .button-toolbar {
