@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteService {
@@ -16,6 +17,10 @@ public class NoteService {
     @Autowired
     public NoteService(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
+    }
+
+    public Optional<Note> findNoteByIdAndOwner(long id, AppUser owner) {
+        return noteRepository.findByIdAndOwner(id, owner);
     }
 
     public List<Note> findAllNotes() {
@@ -32,5 +37,9 @@ public class NoteService {
 
     public List<Note> saveAllNotes(List<Note> notes) {
         return noteRepository.saveAll(notes);
+    }
+
+    public void deleteNote(Note note) {
+        noteRepository.delete(note);
     }
 }

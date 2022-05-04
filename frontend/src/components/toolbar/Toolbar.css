@@ -4,7 +4,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     gap: 15px;
-    background: whitesmoke;
+    background: #ffffff;
 }
 
 .header-icons {

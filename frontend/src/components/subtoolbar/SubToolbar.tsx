@@ -5,11 +5,15 @@ import '../common/Common.css'
 import axios from "axios";
 import { MY_NOTES_URL } from "../../BackendUrls";
 import { postNoteRequest } from "../../requests/requests";
+import { useNavigate } from 'react-router-dom'
+import NoteEditModal from "../note-editable/NoteEditModal";
+import { JsxAttributeLike } from "typescript";
 
 const SubToolbar = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const navigator = useNavigate();
 
     const showAddNoteForm = () => {
         setIsVisible(!isVisible);
@@ -17,46 +21,18 @@ const SubToolbar = () => {
 
     const addNote = async () => {
         if (title != '' && content != '') {
-            postNoteRequest({title, content});
-            
+            postNoteRequest({ title, content });
+            navigator('/', { replace: true });
         }
     }
 
     return (
         <div className="subtoolbar">
             <div className="add-note-button-wrapper" onClick={showAddNoteForm}>
-                {
-                    isVisible ? <Icon name="remove" /> : <Icon name="add" />
-                }
-
+                <Icon name="add" />
+                <NoteEditModal />
             </div>
-            <div className="form-container" style={{ "display": isVisible ? 'flex' : 'none' }}>
-                <div className="form">
-                    Add new note ...
-
-                    <label>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="Title ..."
-                        />
-                    </label>
-                    
-                    <label>
-                        <input
-                            type="text"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            placeholder="Content ..."
-                        />
-                    </label>
-                    <div className="button-toolbar" onClick={addNote}>
-                        <Icon name="note_add" />
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div >
     );
 }
 

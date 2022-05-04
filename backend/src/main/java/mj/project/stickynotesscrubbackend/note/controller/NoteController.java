@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -43,11 +44,13 @@ public class NoteController {
 
 
     @GetMapping("/users/me/notes")
-    public ResponseEntity<List<Note>> findMyNotes(Principal principal) {
+    public ResponseEntity<List<NoteDto>> findMyNotes(Principal principal) {
         Optional<AppUser> appUser = userService.findUserByUsername(principal.getName());
         if (appUser.isPresent()) {
-            List<Note> notes = noteService.findAllNotesByUser(appUser.get());
-            return ResponseEntity.ok(notes);
+            List<NoteDto> noteDtos = noteService.findAllNotesByUser(appUser.get()).stream()
+                    .map(NoteDto::fromEntity)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(noteDtos);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -60,5 +63,19 @@ public class NoteController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE); //todo: changee
+    }
+
+    @DeleteMapping("/users/me/notes/{id}")
+    public ResponseEntity<HttpStatus> deleteMyNote(@PathVariable long id, Principal principal) {
+        Optional<AppUser> appUser = userService.findUserByUsername(principal.getName());
+        if (appUser.isPresent()) {
+            Optional<Note> note = noteService.findNoteByIdAndOwner(id, appUser.get());
+            if(note.isPresent()) {
+                noteService.deleteNote(note.get());
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
