@@ -1,6 +1,5 @@
 import React from "react";
-import Icon from "../note/Icon";
-import './Toolbar.css'
+import Icon from "./Icon";
 import {
     BrowserRouter as Router,
     Routes,

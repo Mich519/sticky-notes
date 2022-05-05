@@ -11,6 +11,21 @@ import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Login";
 import Registration from "../pages/Registration";
 
+/*const PrivateRoute = (isAuthenticated : boolean) => {
+    return (
+        {
+            isAuthenticated === true
+            ? null
+            : <Navigate to="/login"/>
+        }
+      <Route
+        render={(props) => authed === true
+          ? <Component {...props} />
+          : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
+      />
+    )
+  }*/
+
 const AppRouter = () => {
     return (
         <Router>

@@ -9,7 +9,7 @@ export const getAllNotesRequest = async () => {
             withCredentials: true
         }
     );
-    return response.data;
+    return response;
 }
 
 export const postNoteRequest = async (notePayload: PostNotePayload) => {

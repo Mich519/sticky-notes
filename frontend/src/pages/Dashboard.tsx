@@ -1,20 +1,12 @@
-import React, {useState} from "react";
-import Board from "../components/board/Board";
-import SubToolbar from "../components/subtoolbar/SubToolbar";
-import Toolbar from "../components/toolbar/Toolbar";
+import Board from "../components/Board";
+import SubToolbar from "../components/SubToolbar";
+import Toolbar from "../components/Toolbar";
 
 const Dashboard = () => {
-
-    const [test, setTest] = useState(false);
-
-    const rerender = () => {
-        setTest(!test);
-    }
-
     return (
         <div>
             <Toolbar />
-            <SubToolbar rerenderParentCallback={rerender}/>
+            <SubToolbar/>
             <Board/>
         </div>
     );

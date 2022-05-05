@@ -1,14 +1,14 @@
 import React from 'react';
-import Board from './components/board/Board';
-import Toolbar from './components/toolbar/Toolbar';
-import './App.css';
-import SubToolbar from './components/subtoolbar/SubToolbar';
+import Board from './components/Board';
+import Toolbar from './components/Toolbar';
+import './assets/styles/Stylesheet.css'
+import SubToolbar from './components/SubToolbar';
 import AppRouter from './routers/AppRouter';
 
 const App = () => {
 
     return (
-        <div className="App">
+        <div className="app">
             <AppRouter/>
         </div>
     );

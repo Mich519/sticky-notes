@@ -1,6 +1,4 @@
 import React from "react";
-import './Note.css'
-import './Icon.css'
 import 'material-icons/iconfont/filled.css';
 
 interface IconProp {

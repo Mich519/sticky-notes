@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from "react";
-import './Login.css'
-import '../components/common/Common.css'
 import { Link } from "react-router-dom";
 import { LOGIN_ENDPOINT } from "../BackendUrls";
 import axios from 'axios';
-import  { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
-
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showLoginFailureMessage, setShowLoginFailureMessage] = useState(false);
     const navigator = useNavigate();
 
     useEffect(() => {
-        
+
     }, [showLoginFailureMessage]);
 
     const sendLoginRequest = async () => {
@@ -31,7 +27,7 @@ const Login = () => {
                 })
 
                 if (response.status === 200) {
-                    navigator('/', {replace:true});
+                    navigator('/', { replace: true });
                 }
 
             } catch (error) {
@@ -42,9 +38,9 @@ const Login = () => {
     }
 
     return (
-        <div className="login-container">
-            <form>
-                <h3>Log in</h3>
+        <div className="form-container">
+            <div className="form">
+                <h2>Log in</h2>
 
                 <div className="form-group">
                     <input type="text" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
@@ -53,9 +49,9 @@ const Login = () => {
                 <div className="form-group">
                     <input type="password" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type="button" onClick={sendLoginRequest}>Sign in</button>
+                <button type="button" className="form-button" onClick={sendLoginRequest}>Sign in</button>
                 <span>
-                    Don't have an account?
+                    Don't have an account? &nbsp;
                     <Link to="/signup">
                         Sign up!
                     </Link>
@@ -65,10 +61,7 @@ const Login = () => {
                         showLoginFailureMessage ? <span> Login lub hasło jest nieprawidłowe!</span> : null
                     }
                 </div>
-
-            </form>
-
-
+            </div>
         </div>
     );
 }

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useId } from 'react';
-import './Note.css'
 import Icon from './Icon';
-import internal from 'stream';
-import { deleteNoteRequest } from '../../requests/requests';
+import { deleteNoteRequest } from '../requests/requests';
 import  { useNavigate } from 'react-router-dom' //TODO: move all redirects to one file
 
 interface NoteProp {
@@ -19,7 +17,8 @@ const Note = (props: NoteProp) => {
         const status = await deleteNoteRequest(id);
         console.log(status);
         if (status === 204) {
-            navigator('/', {replace:true}); //todo: refresh after removing a note
+            navigator('/', {replace:true}); 
+            window.location.reload();
         }
     }
 

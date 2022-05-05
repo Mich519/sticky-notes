@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import './Registration.css'
 import { REGISTRATION_ENDPOINT } from '../BackendUrls'
 import { Link } from "react-router-dom";
-import  { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Registration = () => {
 
@@ -27,32 +26,31 @@ const Registration = () => {
             };
 
             const response = await fetch(REGISTRATION_ENDPOINT, requestOptions);
-            if(response.status == 201) {
-                navigator('/login', {replace:true});
+            if (response.status == 201) {
+                navigator('/login', { replace: true });
             }
             console.log(response);
         }
     }
 
     return (
-        <div className="registration-container">
-            <form>
-                <h3>Sign up</h3>
-
-                <div>
+        <div className="form-container">
+            <div className="form">
+                <h2>Sign up</h2>
+                <div className="form-group">
                     <input type="text" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
                 </div>
-                <div>
+                <div className="form-group">
                     <input type="password" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type="button" onClick={sendSignupRequest}>Sign up </button>
+                <button type="button" className="form-button" onClick={sendSignupRequest}>Sign up </button>
                 <span>
-                    Already have an account?
+                    Already have an account? &nbsp;
+                    <Link to="/login">
+                        Log in!
+                    </Link>
                 </span>
-                <Link to="/login">
-                    Log in!
-                </Link>
-            </form>
+            </div>
         </div>
     );
 }

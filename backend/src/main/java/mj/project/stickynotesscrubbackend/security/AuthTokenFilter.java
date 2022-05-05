@@ -44,7 +44,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                         .findFirst();
             }
 
-
             if (jwtCookie.isPresent() && jwtUtils.validateJwtToken(jwtCookie.get().getValue())) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwtCookie.get().getValue());
                 UserDetails userDetails = appUserService.loadUserByUsername(username);
